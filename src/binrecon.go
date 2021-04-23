@@ -1,3 +1,15 @@
+/*
+ ▄▄▄▄    ██▓ ███▄    █  ██▀███  ▓█████  ▄████▄   ▒█████   ███▄    █
+▓█████▄ ▓██▒ ██ ▀█   █ ▓██ ▒ ██▒▓█   ▀ ▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █
+▒██▒ ▄██▒██▒▓██  ▀█ ██▒▓██ ░▄█ ▒▒███   ▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒
+▒██░█▀  ░██░▓██▒  ▐▌██▒▒██▀▀█▄  ▒▓█  ▄ ▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒
+░▓█  ▀█▓░██░▒██░   ▓██░░██▓ ▒██▒░▒████▒▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░
+░▒▓███▀▒░▓  ░ ▒░   ▒ ▒ ░ ▒▓ ░▒▓░░░ ▒░ ░░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒
+▒░▒   ░  ▒ ░░ ░░   ░ ▒░  ░▒ ░ ▒░ ░ ░  ░  ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░
+ ░    ░  ▒ ░   ░   ░ ░   ░░   ░    ░   ░        ░ ░ ░ ▒     ░   ░ ░
+ ░       ░           ░    ░        ░  ░░ ░          ░ ░           ░
+      ░                                ░
+*/
 package main
 
 import (
@@ -85,30 +97,31 @@ func pullPaste(pasteKey string) string {
 }
 
 //https://gist.github.com/ryanfitz/4191392
-func doEvery(d time.Duration, f func(time.Time)) {
-	for x := range time.Tick(d) {
-		f(x)
+func doEvery(d time.Duration, f func()) {
+	for range time.Tick(d) {
+		f()
 	}
 }
 
-func recon(t time.Time) {
-	file, err := os.OpenFile("pastes/"+"recon-"+t.String()+".json", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0744)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
+func recon() {
 	latest := pullLatest()
 	for i := range latest {
 		latest[i].Data = pullPaste(latest[i].Key)
 		//latest[i].Data = "data here"
 		fmt.Println("[*] Saving paste " + latest[i].Title + " {" + latest[i].Key + "}")
-
 		pasteJSON, _ := json.Marshal(latest[i])
+
+		file, err := os.OpenFile("/collections/"+"recon-"+latest[i].Key+".json", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0744)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
+
 		fmt.Fprintf(file, string(pasteJSON)+"\n")
 	}
 }
 
 func main() {
+	recon()
 	doEvery(10*time.Minute, recon)
 }

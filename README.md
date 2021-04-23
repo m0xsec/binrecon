@@ -1,5 +1,18 @@
 # binrecon
 
+```
+ ▄▄▄▄    ██▓ ███▄    █  ██▀███  ▓█████  ▄████▄   ▒█████   ███▄    █ 
+▓█████▄ ▓██▒ ██ ▀█   █ ▓██ ▒ ██▒▓█   ▀ ▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █ 
+▒██▒ ▄██▒██▒▓██  ▀█ ██▒▓██ ░▄█ ▒▒███   ▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒
+▒██░█▀  ░██░▓██▒  ▐▌██▒▒██▀▀█▄  ▒▓█  ▄ ▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒
+░▓█  ▀█▓░██░▒██░   ▓██░░██▓ ▒██▒░▒████▒▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░
+░▒▓███▀▒░▓  ░ ▒░   ▒ ▒ ░ ▒▓ ░▒▓░░░ ▒░ ░░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒ 
+▒░▒   ░  ▒ ░░ ░░   ░ ▒░  ░▒ ░ ▒░ ░ ░  ░  ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░
+ ░    ░  ▒ ░   ░   ░ ░   ░░   ░    ░   ░        ░ ░ ░ ▒     ░   ░ ░ 
+ ░       ░           ░    ░        ░  ░░ ░          ░ ░           ░ 
+      ░                                ░                            
+```
+
 `binrecon` is a simple Pastebin collections tool written in Go and Elastic stack. It assumes you have [Pastebin Scraping API](https://pastebin.com/doc_scraping_api) access (which is based on IPv4 or IPv6 association). 
 
 ## Configuration
