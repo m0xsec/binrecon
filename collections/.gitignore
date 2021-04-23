@@ -1,0 +1,4 @@
+# Don't push collections data to github :3
+*
+# This can stay, however
+!.gitignore
