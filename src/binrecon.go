@@ -36,7 +36,7 @@ type paste struct {
 }
 
 func pullLatest() []paste {
-	url := "https://scrape.pastebin.com/api_scraping.php?limit=250"
+	url := "https://scrape.pastebin.com/api_scraping.php?limit=100"
 
 	reconClient := http.Client{
 		Timeout: time.Second * 15, //Maximum of 15 secs
@@ -106,22 +106,25 @@ func doEvery(d time.Duration, f func()) {
 func recon() {
 	latest := pullLatest()
 	for i := range latest {
-		latest[i].Data = pullPaste(latest[i].Key)
-		//latest[i].Data = "data here"
-		fmt.Println("[*] Saving paste " + latest[i].Title + " {" + latest[i].Key + "}")
-		pasteJSON, _ := json.Marshal(latest[i])
+		// only save if file doesn't already exist
+		if _, err := os.Stat("/collections/" + "recon-" + latest[i].Key + ".json"); os.IsNotExist(err) {
+			latest[i].Data = pullPaste(latest[i].Key)
 
-		file, err := os.OpenFile("/collections/"+"recon-"+latest[i].Key+".json", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0744)
-		if err != nil {
-			log.Fatal(err)
+			fmt.Println("[*] Saving paste " + latest[i].Title + " {" + latest[i].Key + "}")
+			pasteJSON, _ := json.Marshal(latest[i])
+
+			file, err := os.OpenFile("/collections/"+"recon-"+latest[i].Key+".json", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0744)
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer file.Close()
+
+			fmt.Fprintf(file, string(pasteJSON)+"\n")
 		}
-		defer file.Close()
-
-		fmt.Fprintf(file, string(pasteJSON)+"\n")
 	}
 }
 
 func main() {
 	recon()
-	doEvery(10*time.Minute, recon)
+	doEvery(1*time.Minute, recon)
 }

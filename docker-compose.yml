@@ -35,6 +35,9 @@ services:
         environment:
             ELASTICSEARCH_URL: http://elasticsearch:9200
             ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+            # echo "hunter2" | base64 | base64 | base64 | base64
+            # this allows for basic alerting and actions in Kibana
+            XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: V1ZWb1YyUlhVa2hXYm14T1dqSTRPVU5uUFQwSwo=
         ports:
             - 5601:5601
         networks:
