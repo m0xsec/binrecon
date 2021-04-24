@@ -1,0 +1,4 @@
+# Don't push elastic data to github :3
+*
+# This can stay, however
+!.gitignore

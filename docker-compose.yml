@@ -4,9 +4,64 @@ services:
     binrecon:
         container_name: binrecon
         build: .
-        #ports:
-            # Kibana
-            #- "5601:5601"
         volumes:
-            - ./configs:/configs
             - ./collections:/collections
+        networks:
+            - elastic
+
+    elasticsearch:
+        image: elasticsearch:7.12.0
+        container_name: elasticsearch
+        environment:
+            - node.name=es01
+            - cluster.name=es-binrecon-cluster
+            - discovery.type=single-node
+            - bootstrap.memory_lock=true
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        volumes:
+            - ./es_data:/usr/share/elasticsearch/data
+        ports:
+            - 9200:9200
+        networks:
+            - elastic
+
+    kibana:
+        image: kibana:7.12.0
+        container_name: kibana
+        environment:
+            ELASTICSEARCH_URL: http://elasticsearch:9200
+            ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+        ports:
+            - 5601:5601
+        networks:
+            - elastic
+
+    logstash:
+        image: logstash:7.12.0
+        container_name: logstash
+        volumes: 
+            - ./configs/pipelines:/usr/share/logstash/pipeline
+        ports:
+            - 5044:5044
+        networks:
+            - elastic
+
+    filebeat:
+        image: docker.elastic.co/beats/filebeat:7.12.0
+        entrypoint: bash -c 'export PATH=$PATH:/usr/share/filebeat && /usr/local/bin/docker-entrypoint -e'
+        user: root
+        container_name: filebeat
+        volumes: 
+            - ./configs/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+            - ./collections:/collections
+        networks:
+            - elastic
+
+
+networks:
+    elastic:
+        driver: bridge

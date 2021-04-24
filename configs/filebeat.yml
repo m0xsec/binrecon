@@ -1,8 +1,0 @@
-filebeat.prospectors:
-- input_type: log
-  paths:
-    - "/path/to/binrecon/pastes/*.json"
-  fields_under_root: true
-
-output.logstash:
-  hosts: ["127.0.0.1:5044"]

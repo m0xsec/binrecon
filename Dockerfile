@@ -1,6 +1,6 @@
 FROM debian:buster
 
-# Install updates, Golang
+# Install updates, Certs, Golang
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install ca-certificates golang -y
 

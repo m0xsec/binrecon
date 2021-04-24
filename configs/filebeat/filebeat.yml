@@ -1,0 +1,8 @@
+filebeat.inputs:
+- input_type: log
+  paths:
+    - "/collections/*.json"
+  fields_under_root: true
+
+output.logstash:
+  hosts: ["logstash:5044"]
