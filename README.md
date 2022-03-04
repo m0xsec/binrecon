@@ -24,4 +24,4 @@ The `configs` folder contains the relevant configuration files for Elastic searc
 
 This is intended to be ran via Docker though you may also deploy it elsewhere.
 
-If you have any questions, comments, or concerns, reach out to me on Twitter [@m0xxz](https://twitter.com/m0xxz) <3
+If you have any questions, comments, or concerns, reach out to me on Twitter [@m0xsec](https://twitter.com/m0xsec) <3
